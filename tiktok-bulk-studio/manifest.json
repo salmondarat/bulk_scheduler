@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Reels Bulk Studio (TikTok + Facebook)",
+  "version": "1.0.0",
+  "description": "TikTok Studio bulk uploader and Facebook composer scheduler in one extension — the panel adapts to whichever site you are on.",
+  "minimum_chrome_version": "110",
+  "permissions": ["storage", "tabs", "debugger"],
+  "host_permissions": ["https://www.tiktok.com/*", "https://business.facebook.com/*"],
+  "action": {
+    "default_title": "Toggle the bulk panel"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.tiktok.com/tiktokstudio/*",
+        "https://www.tiktok.com/upload*"
+      ],
+      "js": [
+        "content/store.js",
+        "content/csv.js",
+        "content/automation.js",
+        "content/panel.js",
+        "content/content.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://business.facebook.com/*"],
+      "js": [
+        "content/store.js",
+        "content/csv.js",
+        "content/fb-automation.js",
+        "content/panel.js",
+        "content/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["content/panel.css"],
+      "matches": ["https://www.tiktok.com/*", "https://business.facebook.com/*"]
+    }
+  ]
+}
